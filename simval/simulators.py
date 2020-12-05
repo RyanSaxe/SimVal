@@ -17,6 +17,7 @@ class DataSimulator:
         defaults = self._get_defaults()
         assert 'distribution' in defaults, 'Must have a default manner of creating data distribution'
         self.interactions = interactions
+        self.instructions = instructions
         for name,rules in instructions.items():
             rules = {**defaults, **rules}
             self.instructions[name] = rules
