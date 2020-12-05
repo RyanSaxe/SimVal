@@ -15,16 +15,16 @@ class DataSimulator:
                 'simulation': dict()
             }
         defaults = self._get_defaults()
-        assert 'distribution' in defaults, 'Must have a default manner of creating data distribution'
+        #these are not in `get_defaults` since they are required. If `_get_defaults`
+        # is overwritten, this makes sure distribution and priority_q are handled
+        defaults.setdefault('distribution',np.random.normal)
+        defaults.setdefault('priority_q',[])
         self.interactions = interactions
         self.instructions = {name: {**defaults, **rules} for name,rules in instructions.items()}
 
     def _get_defaults(self) -> dict:
-        #overwrite this often
-        return {
-            'distribution': np.random.normal,
-            'priority_q': []
-        }
+        #overwrite this to create more involved default functions
+        return dict()
 
     def simulate(self, size: int) -> pd.DataFrame:
         df = self._create_base(size)
