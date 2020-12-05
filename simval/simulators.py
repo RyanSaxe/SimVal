@@ -19,7 +19,7 @@ class DataSimulator:
         self.interactions = interactions
         self.instructions = {name: {**defaults, **rules} for name,rules in instructions.items()}
 
-    def _get_defaults(self) -> dict:}
+    def _get_defaults(self) -> dict:
         #overwrite this often
         return {
             'distribution': np.random.normal,
