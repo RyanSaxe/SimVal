@@ -48,7 +48,7 @@ class DataSimulator:
             data_dict[column] = data
         return pd.DataFrame(data_dict)
 
-    def _apply_interactions(self, df: pf.DataFrame) -> pd.DataFrame:
+    def _apply_interactions(self, df: pd.DataFrame) -> pd.DataFrame:
         for column, rules in self.interactions.items():
             df[column] = None
             preprocessed = ['priority_q']
