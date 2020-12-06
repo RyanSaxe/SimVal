@@ -1,4 +1,5 @@
 from simulators import DataSimulator
+from concurrent.futures import ThreadPoolExecutor
 
 class Validator:
     def __init__(
@@ -6,7 +7,7 @@ class Validator:
         trained_model,
         simulator: DataSimulator,
     ):
-        for name,interaction in simulator.interactions.items():
+        for name in simulator.interactions.keys():
             assert hasattr(trained_model, name)
             assert callable(trained_model.name)
         self.interactions = simulator.interactions
@@ -23,14 +24,14 @@ class Validator:
     def validate(self, n_sims, size_sims, multithreaded=True):
         if isinstance(size_sims, list):
             if n_sims > len(size_sims):
-                size_sims = size_sims + [size_sims[-1] * (n_sims - len(size_sims))]
+                size = size_sims + [size_sims[-1] * (n_sims - len(size_sims))]
         else:
-            size_sims = [size_sims] * n_sims
+            size = [size_sims] * n_sims
         if multithreaded:
             with ThreadPoolExecutor(max_workers=None) as executor:
-                result = list(executor.map(self, [size] * n_sims))
+                result = list(executor.map(self, size))
         else:
-            result = [self(size) for i in range(n_sims)]
-
+            result = [self(size[i]) for i in range(n_sims)]
+        return result
     def _validate(self, size):
         pass
