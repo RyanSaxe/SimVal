@@ -5,12 +5,14 @@ class Validator:
     def __init__(
         self,
         trained_model,
+        specifications: dict,
         simulator: DataSimulator,
     ):
         for name in simulator.interactions.keys():
             assert hasattr(trained_model, name)
             assert callable(trained_model.name)
-        self.interactions = simulator.interactions
+        self.simulator = simulator
+        self.specifications = specifications
         self.model = trained_model
 
     def __call__(self, *args):
@@ -33,5 +35,12 @@ class Validator:
         else:
             result = [self(size[i]) for i in range(n_sims)]
         return result
+
     def _validate(self, size):
+        pass
+
+    def _validate_metrics(self):
+        pass
+
+    def _validate_derivatives(self):
         pass
